@@ -16,6 +16,8 @@ type Cor = termbox.Attribute
 const (
 	CorPadrao     Cor = termbox.ColorDefault
 	CorCinzaEscuro    = termbox.ColorDarkGray
+	CorAzulClaro      = termbox.ColorLightBlue
+	CorAzul           = termbox.ColorBlue
 	CorVermelho       = termbox.ColorRed
 	CorVerde          = termbox.ColorGreen
 	CorParede         = termbox.ColorBlack | termbox.AttrBold | termbox.AttrDim
@@ -81,7 +83,7 @@ func interfaceDesenharJogo(jogo *Jogo) {
 func interfaceLimparTela() {
 	termbox.Clear(CorPadrao, CorPadrao)
 }
-
+ 
 // Força a atualização da tela do terminal com os dados desenhados
 func interfaceAtualizarTela() {
 	termbox.Flush()
