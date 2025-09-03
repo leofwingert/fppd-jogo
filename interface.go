@@ -14,13 +14,15 @@ type Cor = termbox.Attribute
 
 // Definições de cores utilizadas no jogo
 const (
-	CorPadrao     Cor = termbox.ColorDefault
-	CorCinzaEscuro    = termbox.ColorDarkGray
-	CorVermelho       = termbox.ColorRed
-	CorVerde          = termbox.ColorGreen
-	CorParede         = termbox.ColorBlack | termbox.AttrBold | termbox.AttrDim
-	CorFundoParede    = termbox.ColorDarkGray
-	CorTexto          = termbox.ColorDarkGray
+	CorPadrao      Cor = termbox.ColorDefault
+	CorCinzaEscuro     = termbox.ColorDarkGray
+	CorVermelho        = termbox.ColorRed
+	CorVerde           = termbox.ColorGreen
+	CorParede          = termbox.ColorBlack | termbox.AttrBold | termbox.AttrDim
+	CorFundoParede     = termbox.ColorDarkGray
+	CorTexto           = termbox.ColorDarkGray
+	CorMagenta         = termbox.ColorMagenta
+	CorAmarelo         = termbox.ColorYellow
 )
 
 // EventoTeclado representa uma ação detectada do teclado (como mover, sair ou interagir)
@@ -95,8 +97,17 @@ func interfaceDesenharElemento(x, y int, elem Elemento) {
 // Exibe uma barra de status com informações úteis ao jogador
 func interfaceDesenharBarraDeStatus(jogo *Jogo) {
 	// Linha de status dinâmica
-	for i, c := range jogo.StatusMsg {
-		termbox.SetCell(i, len(jogo.Mapa)+1, c, CorTexto, CorPadrao)
+	statusMsg := jogo.StatusMsg
+	if jogo.VelocidadeAtiva {
+		statusMsg = "VELOCIDADE ATIVA!" + statusMsg
+	}
+
+	for i, c := range statusMsg {
+		cor := CorTexto
+		if jogo.VelocidadeAtiva && i < 22 { // Destaca o indicador de velocidade
+			cor = CorVerde
+		}
+		termbox.SetCell(i, len(jogo.Mapa)+1, c, cor, CorPadrao)
 	}
 
 	// Instruções fixas
@@ -105,4 +116,3 @@ func interfaceDesenharBarraDeStatus(jogo *Jogo) {
 		termbox.SetCell(i, len(jogo.Mapa)+3, c, CorTexto, CorPadrao)
 	}
 }
-

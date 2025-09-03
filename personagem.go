@@ -42,7 +42,14 @@ func personagemExecutarAcao(ev EventoTeclado, jogo *Jogo, acoes chan<- Acao) boo
 		case 'd':
 			dx = 1
 		}
+
+		// Move uma vez
 		acoes <- Acao{Tipo: "moverPersonagem", DX: dx, DY: dy}
+
+		// Se velocidade está ativa, move novamente
+		if jogo.VelocidadeAtiva {
+			acoes <- Acao{Tipo: "moverPersonagem", DX: dx, DY: dy}
+		}
 	}
 	return true
 }

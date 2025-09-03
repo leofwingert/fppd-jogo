@@ -16,27 +16,30 @@ type Elemento struct {
 
 // Jogo contém o estado atual do jogo
 type Jogo struct {
-	Mapa           [][]Elemento // grade 2D representando o mapa
-	PosX, PosY     int          // posição atual do personagem
-	UltimoVisitado Elemento     // elemento que estava na posição do personagem antes de mover
-	StatusMsg      string       // mensagem para a barra de status
+	Mapa            [][]Elemento // grade 2D representando o mapa
+	PosX, PosY      int          // posição atual do personagem
+	UltimoVisitado  Elemento     // elemento que estava na posição do personagem antes de mover
+	StatusMsg       string       // mensagem para a barra de status
+	VelocidadeAtiva bool         // indica se o efeito de velocidade está ativo
 }
 
 type Acao struct {
-	Tipo   string
-	X, Y   int
-	DX, DY int
-	Elem   Elemento
+	Tipo      string
+	X, Y      int
+	DX, DY    int
+	Elem      Elemento
+	StatusMsg string
 }
 
 // Elementos visuais do jogo
 var (
-	Personagem = Elemento{'☺', CorCinzaEscuro, CorPadrao, true}
-	Inimigo    = Elemento{'☠', CorVermelho, CorPadrao, true}
-	Parede     = Elemento{'▤', CorParede, CorFundoParede, true}
-	Vegetacao  = Elemento{'♣', CorVerde, CorPadrao, false}
-	Vazio      = Elemento{' ', CorPadrao, CorPadrao, false}
-	Portal     = Elemento{'○', CorVerde, CorPadrao, false}
+	Personagem   = Elemento{'☺', CorCinzaEscuro, CorPadrao, true}
+	Inimigo      = Elemento{'☠', CorVermelho, CorPadrao, true}
+	Parede       = Elemento{'▤', CorParede, CorFundoParede, true}
+	Vegetacao    = Elemento{'♣', CorVerde, CorPadrao, false}
+	Vazio        = Elemento{' ', CorPadrao, CorPadrao, false}
+	Portal       = Elemento{'⚛', CorMagenta, CorPadrao, false}
+	PowerUpSpeed = Elemento{'★', CorAmarelo, CorPadrao, false}
 )
 
 // Cria e retorna uma nova instância do jogo
