@@ -35,12 +35,14 @@ go get -u github.com/nsf/termbox-go
 Linux:
 
 ```bash
+cd src
 go build -o jogo
 ```
 
 Windows:
 
 ```bash
+cd src
 go build -o jogo.exe
 ```
 
