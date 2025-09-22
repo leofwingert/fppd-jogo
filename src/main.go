@@ -112,11 +112,17 @@ func main() {
 	alertaInimigos := make(chan [2]int, 10)
 	comandosInimigo1 := make(chan string, 5)
 
+	canaisUsoPortal := make(map[[2]int] chan bool)
+	portal1Usado := make(chan bool, 1)
+	canaisUsoPortal[[2]int{11,3}] = portal1Usado
+	go portal(11, 3, acoes,portal1Usado) // Portal 1 em (11,3)
+
+	portal2Usado := make(chan bool, 1)
+	canaisUsoPortal[[2]int{43, 3}] = portal2Usado
+	go portal(43, 3, acoes, portal2Usado) // Portal 2 em (43,3)
+
 	// desenha o estado inicial do jogo
 	interfaceDesenharJogo(&jogo)
-
-	go portal(11, 3, acoes) // Portal 1 em (11,3)
-	go portal(43, 3, acoes) // Portal 2 em (43,3)
 
 	inimigo1 := InimigoPatrulheiro{
 		X: 43, Y: 14,
@@ -133,7 +139,7 @@ func main() {
 
 	for {
 		evento := interfaceLerEventoTeclado()
-		if continuar := personagemExecutarAcao(evento, &jogo, acoes); !continuar {
+		if continuar := personagemExecutarAcao(evento, &jogo, acoes, canaisUsoPortal); !continuar {
 			break
 		}
 	}

@@ -4,13 +4,24 @@ import (
 	"time"
 )
 
-func portal(x, y int, acoes chan<- Acao) {
+func portal(x, y int, acoes chan<- Acao, usado <-chan bool) {
 	for {
 		acoes <- Acao{Tipo: "spawn", X: x, Y: y, Elem: Portal}
-		time.Sleep(5 * time.Second)
+
+		timeout := time.After(10 * time.Second)
+		aberto := true
+		for aberto {
+			select {
+			case <-usado:
+				acoes <- Acao{Tipo: "status", StatusMsg: "Você atravessou o portal a tempo!"}
+			case <-timeout:
+				aberto = false
+				acoes <- Acao{Tipo: "status", StatusMsg: "O portal se fechou!"}
+			}
+		}
 
 		acoes <- Acao{Tipo: "spawn", X: x, Y: y, Elem: Vazio}
-		time.Sleep(5 * time.Second)
+		time.Sleep(5 * time.Second) // Espera para reaparecer
 	}
 }
 

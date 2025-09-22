@@ -6,7 +6,7 @@ func personagemInteragir(jogo *Jogo) {
 	jogo.StatusMsg = fmt.Sprintf("Interagindo em (%d, %d)", jogo.PosX, jogo.PosY)
 }
 
-func personagemExecutarAcao(ev EventoTeclado, jogo *Jogo, acoes chan<- Acao) bool {
+func personagemExecutarAcao(ev EventoTeclado, jogo *Jogo, acoes chan<- Acao, canaisPortais map[[2]int]chan bool) bool {
 	switch ev.Tipo {
 	case "sair":
 		return false
@@ -18,6 +18,12 @@ func personagemExecutarAcao(ev EventoTeclado, jogo *Jogo, acoes chan<- Acao) boo
 			origem := [2]int{jogo.PosX, jogo.PosY}
 			if destino, ok := destinosPortais[origem]; ok {
 				acoes <- Acao{Tipo: "teleportarPersonagem", X: destino[0], Y: destino[1]}
+				if canal, existe := canaisPortais[origem]; existe {
+					select {
+					case canal <- true:
+					default:
+					}
+				}
 			} else {
 				jogo.StatusMsg = "Portal sem destino!"
 			}
